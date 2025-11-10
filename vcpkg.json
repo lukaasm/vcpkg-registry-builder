@@ -4,8 +4,11 @@
     "version": "0",
     "dependencies": [
         {
-            "name": "slang-rhi",
-            "features": [ "d3d12" ]
+            "name": "shader-slang-rhi",
+            "features": [
+                "vulkan",
+                "d3d11"
+            ]
         }
     ]
 }

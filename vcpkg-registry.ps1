@@ -38,8 +38,6 @@ if ( $action -eq "remove" ) {
 }
 
 if ( $action -eq "commit" ) {
-    Set-Location $registry
-
     git -C $registry add ports/$port_name
     git -C $registry commit -m "- ${port_name}: update port $features"
 
