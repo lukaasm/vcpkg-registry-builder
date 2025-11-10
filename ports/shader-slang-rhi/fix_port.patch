@@ -1,0 +1,38 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8104b75..05f7184 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -226,6 +226,10 @@ macro(copy_file IN_FILE OUT_DIR)
+     endif()
+ endmacro()
+ 
++find_package(slang CONFIG REQUIRED)
++target_link_libraries(slang-rhi PUBLIC slang::slang)
++
++if(0)
+ # Fetch slang
+ if(SLANG_RHI_FETCH_SLANG)
+     set(SLANG_VERSION ${SLANG_RHI_FETCH_SLANG_VERSION})
+@@ -308,7 +312,7 @@ if(NOT SLANG_RHI_BUILD_FROM_SLANG_REPO)
+         copy_file(${SLANG_RHI_SLANG_BINARY_DIR}/bin/slang-rt.dll .)
+     endif()
+ endif()
+-
++endif()
+ # Slang distributes prelude headers in the "include" directory along the other headers.
+ # However, in a slang build tree, the files are not in the "include" directory but in a separate "prelude" directory.
+ # Make sure to include the prelude directory if it exists.
+@@ -393,9 +397,11 @@ endif()
+ # Fetch & setup Vulkan headers
+ if(SLANG_RHI_ENABLE_VULKAN)
+     message(STATUS "Fetching Vulkan headers ...")
+-    FetchPackage(vulkan_headers URL ${SLANG_RHI_VULKAN_HEADERS_URL})
++    find_package( VulkanHeaders CONFIG REQUIRED )
++    #FetchPackage(vulkan_headers URL ${SLANG_RHI_VULKAN_HEADERS_URL})
+     add_library(slang-rhi-vulkan-headers INTERFACE)
+-    target_include_directories(slang-rhi-vulkan-headers INTERFACE ${vulkan_headers_SOURCE_DIR}/include)
++    target_link_libraries( slang-rhi-vulkan-headers INTERFACE Vulkan::Headers )
++    #target_include_directories(slang-rhi-vulkan-headers INTERFACE ${vulkan_headers_SOURCE_DIR}/include)
+ endif()
+ 
+ # Fetch & setup Metal C++ headers

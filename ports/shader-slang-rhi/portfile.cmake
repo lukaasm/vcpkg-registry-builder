@@ -1,0 +1,49 @@
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/source")
+    set( SOURCE_PATH "${CMAKE_CURRENT_LIST_DIR}/source")
+else()
+    vcpkg_from_github(
+        OUT_SOURCE_PATH SOURCE_PATH
+        REPO shader-slang/slang-rhi
+        REF dfdecf49787b012f882c4c321695ba40275f678e
+        SHA512 7092642149e06ca7a6863d2901f2d44363ce0f1c1a11add1644b2636d108491e1aac671959320f89b2189339a09a56976f989138db862bd4921868260613e87c
+        HEAD_REF main
+        PATCHES
+            fix_port.patch
+    )
+endif()
+
+vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+    FEATURES
+        vulkan      SLANG_RHI_ENABLE_VULKAN
+        d3d11       SLANG_RHI_ENABLE_D3D11
+        d3d12       SLANG_RHI_ENABLE_D3D12
+)
+
+string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" SLANG_RHI_BUILD_SHARED)
+
+vcpkg_cmake_configure(
+    SOURCE_PATH "${SOURCE_PATH}"
+    OPTIONS
+        -DSLANG_RHI_BUILD_SHARED=${SLANG_RHI_BUILD_SHARED}
+        -DSLANG_RHI_INSTALL=ON
+        -DSLANG_RHI_BUILD_TESTS=OFF
+        -DSLANG_RHI_BUILD_EXAMPLES=OFF
+        -DSLANG_RHI_FETCH_SLANG=OFF
+
+        ${FEATURE_OPTIONS}
+
+        -DSLANG_RHI_ENABLE_CPU=ON
+        -DSLANG_RHI_ENABLE_AGILITY_SDK=OFF
+        -DSLANG_RHI_ENABLE_NVAPI=OFF
+        -DSLANG_RHI_ENABLE_METAL=OFF
+        -DSLANG_RHI_ENABLE_CUDA=OFF
+        -DSLANG_RHI_ENABLE_OPTIX=OFF
+        -DSLANG_RHI_ENABLE_WGPU=OFF
+)
+
+vcpkg_cmake_install()
+vcpkg_copy_pdbs()
+
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/LICENSE")
+
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
