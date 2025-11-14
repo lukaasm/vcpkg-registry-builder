@@ -1,0 +1,60 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3302e5d..6d155eb 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -68,7 +68,18 @@ endif()
+ 
+ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+ 
+-add_subdirectory(ext)
++#add_subdirectory(ext)
++
++find_package(asio CONFIG REQUIRED)
++find_package(fmt CONFIG REQUIRED)
++find_package(tl-optional CONFIG REQUIRED)
++find_package(tl-expected CONFIG REQUIRED)
++find_package(nlohmann_json CONFIG REQUIRED)
++find_package(utf8cpp CONFIG REQUIRED)
++find_package(ghc_filesystem CONFIG REQUIRED)
++find_package(function2 CONFIG REQUIRED)
++find_package(fmt CONFIG REQUIRED)
++find_package(concurrentqueue CONFIG REQUIRED)
+ 
+ add_subdirectory(modio)
+ 
+diff --git a/modio/CMakeLists.txt b/modio/CMakeLists.txt
+index c72e423..31766f5 100644
+--- a/modio/CMakeLists.txt
++++ b/modio/CMakeLists.txt
+@@ -47,7 +47,7 @@ add_public_header(${MODIO_TARGET_NAME} modio/ModioSDK.h)
+ 
+ target_include_directories(${MODIO_TARGET_NAME} INTERFACE ${ModioGeneratedHeaderPath})
+ 
+-target_link_libraries(${MODIO_TARGET_NAME} INTERFACE asio tl::optional platform nlohmann_json function2 concurrentqueue)
++target_link_libraries(${MODIO_TARGET_NAME} INTERFACE asio::asio concurrentqueue::concurrentqueue tl::optional platform nlohmann_json function2::function2 utf8::cpp utf8cpp::utf8cpp  ghcFilesystem::ghc_filesystem)
+ 
+ # In case you have a custom FMT library, update accordingly below
+ # The default linking of the library uses the FMT Header only mode
+@@ -65,7 +65,7 @@ if (MODIO_USE_CUSTOM_FMT)
+ 		endif()
+ 	endif()
+ else ()
+-	target_link_libraries(${MODIO_TARGET_NAME} INTERFACE fmt-header-only)
++	target_link_libraries(${MODIO_TARGET_NAME} INTERFACE fmt::fmt-header-only)
+ endif()
+ 
+ 
+diff --git a/modio/modio/detail/ConcurrentQueueWrapper.h b/modio/modio/detail/ConcurrentQueueWrapper.h
+index 7b7f03a..1c3f953 100644
+--- a/modio/modio/detail/ConcurrentQueueWrapper.h
++++ b/modio/modio/detail/ConcurrentQueueWrapper.h
+@@ -26,7 +26,7 @@ MODIO_DISABLE_WARNING_SPECTRE_MITIGATION
+ MODIO_DISABLE_WARNING_STRUCTURE_PADDING
+ MODIO_DISABLE_WARNING_UNSAFE_BUFFER_USAGE
+ MODIO_DISABLE_WARNING_UNUSED_FUNCTION
+-#include "concurrentqueue.h"
++#include "moodycamel/concurrentqueue.h"
+ MODIO_DISABLE_WARNING_POP
+ 
+ #pragma pop_macro("BLOCK_SIZE")
+\ No newline at end of file

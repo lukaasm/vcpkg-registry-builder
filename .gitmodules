@@ -1,0 +1,3 @@
+[submodule "ports/modio-sdk/source"]
+	path = ports/modio-sdk/source
+	url = https://github.com/modio/modio-sdk.git

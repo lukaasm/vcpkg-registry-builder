@@ -1,5 +1,9 @@
 param( $registry, $action, $port_name, $features, $extra )
 
+if ($action -eq "patch" ) {
+    git -C ${port_source}/source diff > $port_source/fix_port.patch
+}
+
 if ( $action -eq "update") {
     $port_destination = "$registry/ports/${port_name}"
     $port_source = "ports/${port_name}"

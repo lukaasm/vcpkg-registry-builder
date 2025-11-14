@@ -1,0 +1,26 @@
+{
+    "name": "modio-sdk",
+    "version": "2025.10",
+    "description": "Welcome to the mod.io SDK repository, built using C++. It allows game developers to host and automatically install user-generated content in their games..",
+    "homepage": "https://github.com/modio/modio-sdk",
+    "license": "MIT",
+    "dependencies": [
+        {
+            "name": "vcpkg-cmake",
+            "host": true
+        },
+        {
+            "name": "vcpkg-cmake-config",
+            "host": true
+        },
+        "asio",
+        "concurrentqueue",
+        "fmt",
+        "function2",
+        "ghc-filesystem",
+        "nlohmann-json",
+        "tl-optional",
+        "tl-expected",
+        "utfcpp"
+    ]
+}
